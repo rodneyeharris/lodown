@@ -316,7 +316,15 @@ _.map = function(collection, func) {
 *   _.reject([1,2,3,4,5], function(e){return e%2 === 0}) -> [1,3,5]
 */
 
-
+_.reject = function(arr, func){
+        var ret = [];
+  for(var f = 0; f < arr.length; f++) {
+      if(func(arr[f], f, arr) === false) {
+          ret.push(arr[f]);
+      }
+  }
+  return ret;
+};
 
 /** _.partition
 * Arguments:
@@ -336,6 +344,27 @@ _.map = function(collection, func) {
 *   }); -> [[2,4],[1,3,5]]
 }
 */
+
+_.partition = function(arr,func){
+    var truthy = [];
+    var falsy = [];
+    var ar = [];
+  for(var f = 0; f < arr.length; f++) {
+      if(func(arr[f], f, arr) === true) {
+          truthy.push(arr[f]);
+      }
+      else{
+          falsy.push(arr[f]);
+      }
+  } 
+
+  ar.push(truthy);
+  ar.push(falsy);
+  return ar;
+};
+
+    
+
 
 
 /** _.every
@@ -418,6 +447,55 @@ _.every = function(coll, func)
 *   _.some([1,2,3], function(e){return e % 2 === 0}) -> true
 */
 
+_.some = function(collection, func){
+     var bool;
+    if(_.typeOf(func) !== "function")
+    {
+        if(_.typeOf(collection) === "array")
+        {
+            for(let i = 0; i < collection.length; i++)
+            {
+                if(collection[i])
+                {
+                    return true;
+                }
+                else
+                {
+                    bool = false;
+                }
+            }
+        }
+        return bool;
+    }
+    if(_.typeOf(collection) === "array"){
+        for(let i = 0; i < collection.length; i++)
+        {
+            if(func(collection[i], i, collection))
+            {
+                return true;
+            }
+            else
+            {
+                bool = false;
+            }
+        }
+    }
+    else if(_.typeOf(collection) === "object")
+    {
+        for(var key in collection)
+        {
+            if(func(collection[key], key, collection))
+            {
+                return true;
+            }
+            else
+            {
+                bool = false;
+            }
+        }
+    }
+    return bool;
+}
 
 /** _.pluck
 * Arguments:
@@ -429,7 +507,15 @@ _.every = function(coll, func)
 * Examples:
 *   _.pluck([{a: "one"}, {a: "two"}], "a") -> ["one", "two"]
 */
-
+_.pluck = function(array, property){
+    var arr = [];
+    arr = _.map(array, check);
+    function check(value, i)
+    {
+        return array[i][property];
+    }
+    return arr;
+};
 
 //////////////////////////////////////////////////////////////////////
 // DON'T REMOVE THIS CODE ////////////////////////////////////////////
